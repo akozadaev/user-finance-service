@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: user-finance-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/user_finance
+    username: user_finance
+    password: user_finance
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yml
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=60s
+finance:
+  oauth2:
+    introspection-uri: ${OAUTH2_INTROSPECTION_URI:http://localhost:8081/introspect}
+  balance-accrual:
+    enabled: true
+    fixed-delay-ms: 30000
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+finance:
+  balance-accrual:
+    enabled: false
