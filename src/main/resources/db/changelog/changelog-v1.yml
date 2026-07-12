@@ -49,7 +49,7 @@ databaseChangeLog:
             columns:
               - column: { name: name, value: "Иван Иванов" }
               - column: { name: date_of_birth, valueDate: "1993-05-01" }
-              - column: { name: password, value: "`$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy`" }
+              - column: { name: password, value: "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy" }
         - insert:
             tableName: users
             columns:
