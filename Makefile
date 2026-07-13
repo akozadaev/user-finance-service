@@ -4,7 +4,7 @@ COMPOSE := docker compose
 
 .DEFAULT_GOAL := help
 
-.PHONY: help clean compile test-compile test test-fast test-integration package package-fast run run-dev checkstyle infra-up infra-down infra-logs
+.PHONY: help clean compile test-compile test test-fast test-integration package package-fast run run-dev checkstyle infra-up infra-down infra-logs docker-up docker-down docker-logs
 
 help:
 	@printf "Доступные цели:\n"
@@ -17,9 +17,12 @@ help:
 	@printf "  make package-fast      Собрать jar без тестов\n"
 	@printf "  make run               Запустить приложение\n"
 	@printf "  make checkstyle        Проверить стиль кода\n"
-	@printf "  make infra-up          Поднять PostgreSQL\n"
-	@printf "  make infra-down        Остановить PostgreSQL\n"
-	@printf "  make infra-logs        Показать логи PostgreSQL\n"
+	@printf "  make docker-up         Собрать и запустить весь стенд\n"
+	@printf "  make docker-down       Остановить весь стенд\n"
+	@printf "  make docker-logs       Показать логи стенда\n"
+	@printf "  make infra-up          Поднять БД и OAuth2 для локального Java\n"
+	@printf "  make infra-down        Остановить инфраструктуру\n"
+	@printf "  make infra-logs        Показать логи инфраструктуры\n"
 
 clean:
 	$(MVNW) clean
@@ -53,10 +56,19 @@ checkstyle:
 	$(MVNW) checkstyle:check
 
 infra-up:
-	$(COMPOSE) up -d
+	$(COMPOSE) up -d --build finance-postgres oauth-postgres oauth2-server oauth-client-init
 
 infra-down:
 	$(COMPOSE) down
 
 infra-logs:
-	$(COMPOSE) logs -f postgres
+	$(COMPOSE) logs -f finance-postgres oauth-postgres oauth2-server oauth-client-init
+
+docker-up:
+	$(COMPOSE) up -d --build
+
+docker-down:
+	$(COMPOSE) down
+
+docker-logs:
+	$(COMPOSE) logs -f

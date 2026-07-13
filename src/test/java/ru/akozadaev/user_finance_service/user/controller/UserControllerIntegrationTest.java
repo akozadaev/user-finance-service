@@ -39,7 +39,8 @@ class UserControllerIntegrationTest {
 		when(introspectionService.resolveUserId("test-access-token")).thenReturn(1L);
 		mockMvc.perform(get("/api/v1/users")
 						.header(HttpHeaders.AUTHORIZATION, "Bearer test-access-token")
-						.param("name", "Ива").param("page", "0").param("size", "10"))
+						.param("name", "Ива").param("dateOfBirth", "01.01.1990")
+						.param("page", "0").param("size", "10"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.content.length()").value(1))
 				.andExpect(jsonPath("$.content[0].name").value("Иван Иванов"))

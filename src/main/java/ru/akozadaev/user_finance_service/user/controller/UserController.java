@@ -33,7 +33,7 @@ public class UserController {
 
 	@GetMapping
 	public Page<UserResponse> search(
-			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth,
+			@RequestParam(required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate dateOfBirth,
 			@RequestParam(required = false) String phone, @RequestParam(required = false) String name,
 			@RequestParam(required = false) String email, @RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {

@@ -17,5 +17,7 @@ public class OAuthIdentityEntity {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false) @JoinColumn(name = "user_id") private UserEntity user;
 	@Column(nullable = false, unique = true, length = 36) private String subject;
 	protected OAuthIdentityEntity() { }
+	public OAuthIdentityEntity(UserEntity user, String subject) { this.user = user; this.subject = subject; }
 	public UserEntity getUser() { return user; }
+	public String getSubject() { return subject; }
 }

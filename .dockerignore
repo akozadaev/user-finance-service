@@ -1,0 +1,6 @@
+.git
+.idea
+go_oauth2_server
+target
+*.docx
+*:Zone.Identifier

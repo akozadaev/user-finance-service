@@ -17,7 +17,10 @@ spring:
       spec: maximumSize=1000,expireAfterWrite=60s
 finance:
   oauth2:
+    base-url: ${OAUTH2_BASE_URL:http://localhost:8081}
     introspection-uri: ${OAUTH2_INTROSPECTION_URI:http://localhost:8081/introspect}
+    client-id: ${OAUTH2_CLIENT_ID:user-finance-service}
+    client-secret: ${OAUTH2_CLIENT_SECRET:user-finance-service-secret}
   balance-accrual:
     enabled: true
     fixed-delay-ms: 30000

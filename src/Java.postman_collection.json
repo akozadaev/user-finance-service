@@ -1,0 +1,377 @@
+{
+  "info": {
+    "_postman_id": "ca36d75d-469f-484e-9b5b-4cecf8bed4e4",
+    "name": "Java",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "14594718",
+    "_collection_link": "https://go.postman.co/collection/14594718-ca36d75d-469f-484e-9b5b-4cecf8bed4e4?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "User finance service",
+      "item": [
+        {
+          "name": "auth by email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"login\":\"ivan@example.com\",\"password\":\"password\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/auth/token",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "auth by phone",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"login\":\"79207865432\",\"password\":\"password\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/auth/token",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get user by id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VyLWZpbmFuY2Utc2VydmljZSIsImV4cCI6MTc4Mzk4NjE4MywiaWF0IjoxNzgzOTc4OTgzLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiZWUzMDg3NDctNGY1ZC00MGUxLWJiNjEtZGQxYjY2MzIxMGU1In0.fE3xGWrizNkI4dFP-KzLPVbCLYPN3mudjsNisg6-hdY"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VyLWZpbmFuY2Utc2VydmljZSIsImV4cCI6MTc4Mzk4NjE4MywiaWF0IjoxNzgzOTc4OTgzLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiZWUzMDg3NDctNGY1ZC00MGUxLWJiNjEtZGQxYjY2MzIxMGU1In0.fE3xGWrizNkI4dFP-KzLPVbCLYPN3mudjsNisg6-hdY"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all users with filter (phone)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VyLWZpbmFuY2Utc2VydmljZSIsImV4cCI6MTc4Mzk4NjE4MywiaWF0IjoxNzgzOTc4OTgzLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiZWUzMDg3NDctNGY1ZC00MGUxLWJiNjEtZGQxYjY2MzIxMGU1In0.fE3xGWrizNkI4dFP-KzLPVbCLYPN3mudjsNisg6-hdY"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users?phone=79207865432&page=0&size=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "phone",
+                  "value": "79207865432"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all users with filter (day of birst)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VyLWZpbmFuY2Utc2VydmljZSIsImV4cCI6MTc4Mzk4NjE4MywiaWF0IjoxNzgzOTc4OTgzLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiZWUzMDg3NDctNGY1ZC00MGUxLWJiNjEtZGQxYjY2MzIxMGU1In0.fE3xGWrizNkI4dFP-KzLPVbCLYPN3mudjsNisg6-hdY"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users?dateOfBirth=01.01.1990&page=0&size=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "dateOfBirth",
+                  "value": "01.01.1990"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "transfers user to user id = 2",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VyLWZpbmFuY2Utc2VydmljZSIsImV4cCI6MTc4Mzk4NjE4MywiaWF0IjoxNzgzOTc4OTgzLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiZWUzMDg3NDctNGY1ZC00MGUxLWJiNjEtZGQxYjY2MzIxMGU1In0.fE3xGWrizNkI4dFP-KzLPVbCLYPN3mudjsNisg6-hdY"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"toUserId\":2,\"value\":10.00}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/transfers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "transfers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "transfers user to user id = 2 Copy",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1c2VyLWZpbmFuY2Utc2VydmljZSIsImV4cCI6MTc4Mzk4NjE4MywiaWF0IjoxNzgzOTc4OTgzLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiZWUzMDg3NDctNGY1ZC00MGUxLWJiNjEtZGQxYjY2MzIxMGU1In0.fE3xGWrizNkI4dFP-KzLPVbCLYPN3mudjsNisg6-hdY"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"fullName\": \"Иван Иванов1\",\r\n    \"phone\": \"8-999-000-11-22\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/v1/applications",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "applications"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request Copy",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"fullName\": \"Иван Иванов\",\r\n    \"phone\": \"8-999-000-11-22\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/v1/applications",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "applications"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "health",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"fullName\": \"Иван Иванов\",\r\n    \"phone\": \"8-999-000-11-22\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/actuator/health",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "health"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

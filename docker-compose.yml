@@ -1,19 +1,84 @@
 services:
-  postgres:
-    image: postgres:16
-    container_name: user-finance-postgres
+  finance-postgres:
+    image: postgres:16-alpine
     environment:
       POSTGRES_DB: user_finance
       POSTGRES_USER: user_finance
       POSTGRES_PASSWORD: user_finance
-    ports:
-      - "5432:5432"
+    ports: ["5432:5432"]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U user_finance -d user_finance"]
       interval: 5s
       timeout: 5s
-      retries: 10
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
+      retries: 20
+    volumes: ["finance-postgres-data:/var/lib/postgresql/data"]
+
+  oauth-postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: oauth2_db
+      POSTGRES_USER: oauth2_user
+      POSTGRES_PASSWORD: oauth2_password
+    ports: ["5433:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U oauth2_user -d oauth2_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes: ["oauth-postgres-data:/var/lib/postgresql/data"]
+
+  oauth2-server:
+    build: {context: ./go_oauth2_server}
+    environment:
+      PORT: 8080
+      DATABASE_URL: postgres://oauth2_user:oauth2_password@oauth-postgres:5432/oauth2_db?sslmode=disable
+      JWT_SECRET: local-user-finance-jwt-secret-at-least-32-characters
+      TOKEN_EXPIRATION_MINUTES: 60
+      REFRESH_EXPIRATION_HOURS: 168
+      LOG_LEVEL: info
+    ports: ["8081:8080"]
+    depends_on:
+      oauth-postgres: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  oauth-client-init:
+    image: postgres:16-alpine
+    environment:
+      PGPASSWORD: oauth2_password
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        psql -h oauth-postgres -U oauth2_user -d oauth2_db <<'SQL'
+        INSERT INTO clients (id, secret, domain, user_id, created_at)
+        VALUES ('user-finance-service', 'user-finance-service-secret', 'http://localhost:8080', '', NOW())
+        ON CONFLICT (id) DO UPDATE
+        SET secret = EXCLUDED.secret, domain = EXCLUDED.domain, user_id = EXCLUDED.user_id;
+        SQL
+    depends_on:
+      oauth2-server: {condition: service_healthy}
+    restart: "no"
+
+  user-finance-service:
+    build: {context: .}
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://finance-postgres:5432/user_finance
+      SPRING_DATASOURCE_USERNAME: user_finance
+      SPRING_DATASOURCE_PASSWORD: user_finance
+      OAUTH2_BASE_URL: http://oauth2-server:8080
+      OAUTH2_INTROSPECTION_URI: http://oauth2-server:8080/introspect
+      OAUTH2_CLIENT_ID: user-finance-service
+      OAUTH2_CLIENT_SECRET: user-finance-service-secret
+    ports: ["8080:8080"]
+    depends_on:
+      finance-postgres: {condition: service_healthy}
+      oauth-client-init: {condition: service_completed_successfully}
+
 volumes:
-  postgres-data:
+  finance-postgres-data:
+  oauth-postgres-data:

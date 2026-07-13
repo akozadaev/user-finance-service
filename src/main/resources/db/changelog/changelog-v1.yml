@@ -62,7 +62,3 @@ databaseChangeLog:
         - insert: { tableName: email_data, columns: [ { column: { name: user_id, valueNumeric: 2 } }, { column: { name: email, value: "petr@example.com" } } ] }
         - insert: { tableName: phone_data, columns: [ { column: { name: user_id, valueNumeric: 1 } }, { column: { name: phone, value: "79207865432" } } ] }
         - insert: { tableName: phone_data, columns: [ { column: { name: user_id, valueNumeric: 2 } }, { column: { name: phone, value: "79207865433" } } ] }
-        - insert: { tableName: oauth_identity, columns: [ { column: { name: user_id, valueNumeric: 1 } }, { column: { name: subject, value: "00000000-0000-0000-0000-000000000001" } } ] }
-        - insert: { tableName: oauth_identity, columns: [ { column: { name: user_id, valueNumeric: 1 } }, { column: { name: subject, value: "00000000-0000-0000-0000-000000000011" } } ] }
-        - insert: { tableName: oauth_identity, columns: [ { column: { name: user_id, valueNumeric: 2 } }, { column: { name: subject, value: "00000000-0000-0000-0000-000000000002" } } ] }
-        - insert: { tableName: oauth_identity, columns: [ { column: { name: user_id, valueNumeric: 2 } }, { column: { name: subject, value: "00000000-0000-0000-0000-000000000022" } } ] }

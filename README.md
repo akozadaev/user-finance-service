@@ -4,31 +4,32 @@ REST-сервис для поиска пользователей, управле
 
 ## Запуск
 
-Требования: Java 17+, Docker с Compose.
+Для полного запуска нужен только Docker с Compose. Java-сервис, обе базы PostgreSQL и OAuth2-сервер собираются и запускаются одной командой:
 
 ```bash
-make infra-up
-make run
+make docker-up
 ```
 
 Swagger UI: `http://localhost:8080/swagger-ui.html`.
+Логи: `make docker-logs`, остановка: `make docker-down`.
 
-JWT выдаёт внешний [go_oauth2_server](https://github.com/akozadaev/go_oauth2_server), который следует запустить отдельно на порту 8081.
+JWT выдаёт включённый в репозиторий [go_oauth2_server](https://github.com/akozadaev/go_oauth2_server). Compose запускает его на `http://localhost:8081` и автоматически создаёт OAuth-клиента. Отдельно скачивать и запускать его не нужно.
 Адрес интроспекции настраивается переменной `OAUTH2_INTROSPECTION_URI` (по умолчанию `http://localhost:8081/introspect`).
-Получение access token выполняется на OAuth2-сервере:
+После запуска токен получается через API финансового сервиса:
 
 ```bash
-curl -X POST http://localhost:8081/token \
-  -H 'Content-Type: application/x-www-form-urlencoded' \
-  -d 'grant_type=password&username=ivan@example.com&password=password&client_id=CLIENT_ID&client_secret=CLIENT_SECRET'
+curl -X POST http://localhost:8080/api/v1/auth/token \
+  -H 'Content-Type: application/json' \
+  -d '{"login":"ivan@example.com","password":"password"}'
 ```
 
-Для входа по телефону на OAuth2-сервере регистрируется второй OAuth-пользователь с телефоном в качестве `username`; оба внешних субъекта связываются с одним финансовым пользователем. Полученный токен передается как `Authorization: Bearer <token>`.
+Для входа по телефону в `login` передается `79207865432`. При первом успешном запросе сервис автоматически регистрирует отсутствующий OAuth username, получает токен и связывает его `sub` с локальным пользователем. Полученный токен передается как `Authorization: Bearer <token>`.
 
-OAuth2-сервер кладет UUID пользователя в `sub`, а интроспекция возвращает его в `user_id`. Таблица `oauth_identity` связывает один или несколько таких UUID с локальным `users.id`. В демонстрационных данных стоят UUID-заглушки; после регистрации OAuth-пользователей их следует заменить фактическими значениями, возвращенными `POST /users`, например: `UPDATE oauth_identity SET subject = '<uuid>' WHERE id = 1`.
+OAuth2-сервер кладет UUID пользователя в `sub`, а интроспекция возвращает его в `user_id`. Таблица `oauth_identity` автоматически связывает один или несколько таких UUID с локальным `users.id`.
 
 ## API
 
+- `POST /api/v1/auth/token` - аутентификация по email/phone и паролю;
 - `GET /api/v1/users/{id}` - пользователь;
 - `GET /api/v1/users?dateOfBirth=&phone=&name=&email=&page=&size=` - поиск;
 - `POST|PUT|DELETE /api/v1/users/me/emails[/id]` - собственные email;
@@ -53,4 +54,4 @@ make package
 make checkstyle
 ```
 
-Использованы Spring Web, Validation, Data JPA, Security, Caffeine, JJWT, Liquibase, springdoc-openapi и Testcontainers.
+Использованы Spring Web, Validation, Data JPA, Security, Caffeine, Liquibase, springdoc-openapi и Testcontainers.

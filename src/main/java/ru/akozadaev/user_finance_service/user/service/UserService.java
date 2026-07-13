@@ -58,6 +58,7 @@ public class UserService {
 	@CacheEvict(value = "users", key = "#userId")
 	@Transactional
 	public void deleteEmail(Long userId, Long contactId) {
+		requireUserForUpdate(userId);
 		EmailDataEntity item = emailRepository.findById(contactId).orElseThrow(() -> new ResourceNotFoundException("Email не найден"));
 		checkOwner(userId, item.getUser().getId());
 		if (emailRepository.countByUserId(userId) <= 1) throw new ConflictException("У пользователя должен остаться хотя бы один email");
@@ -88,6 +89,7 @@ public class UserService {
 	@CacheEvict(value = "users", key = "#userId")
 	@Transactional
 	public void deletePhone(Long userId, Long contactId) {
+		requireUserForUpdate(userId);
 		PhoneDataEntity item = phoneRepository.findById(contactId).orElseThrow(() -> new ResourceNotFoundException("Телефон не найден"));
 		checkOwner(userId, item.getUser().getId());
 		if (phoneRepository.countByUserId(userId) <= 1) throw new ConflictException("У пользователя должен остаться хотя бы один телефон");
@@ -107,6 +109,11 @@ public class UserService {
 
 	private UserEntity requireUser(Long id) {
 		return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден: " + id));
+	}
+
+	private UserEntity requireUserForUpdate(Long id) {
+		return userRepository.findByIdForUpdate(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден: " + id));
 	}
 
 	private void checkOwner(Long expected, Long actual) {

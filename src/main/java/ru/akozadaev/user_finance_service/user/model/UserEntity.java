@@ -57,4 +57,5 @@ public class UserEntity {
 	public List<EmailDataEntity> getEmails() { return emails; }
 	public List<PhoneDataEntity> getPhones() { return phones; }
 	public void setAccount(AccountEntity account) { this.account = account; }
+	public void setPassword(String password) { this.password = password; }
 }
